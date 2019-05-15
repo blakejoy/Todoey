@@ -11,10 +11,15 @@ import UIKit
 class TodoListViewController: UITableViewController {
   
   var itemArray = ["Take out the trash", "Get gas", "Buy groceries"]
+  
+  let defaults = UserDefaults.standard
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
-    
+    if let items = defaults.array(forKey: "TodoListArray") as? [String]{
+      itemArray = items
+    }
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -56,6 +61,9 @@ class TodoListViewController: UITableViewController {
       //once user clicks this is what is going to happen
       if textField.text != "" {
         self.itemArray.append(textField.text!)
+        
+        self.defaults.set(self.itemArray, forKey: "TodoListArray")
+        
         self.tableView.reloadData()
       }
     }
